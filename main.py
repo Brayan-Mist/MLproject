@@ -38,7 +38,7 @@ if torch.cuda.is_available():
 
 CONFIG = {
     # === ПАРАМЕТРЫ МОДЕЛИ ===
-    'model_name': 'sum_predictor',           # Имя модели (для файлов)
+    'model_name': 'AdditionPerfectVersion',           # Имя модели (для файлов)
     'layers': [128, 64],            # Скрытые слои [64, 32] или [128, 64, 32]
     'activation': 'relu',                    # Активация: 'relu', 'tanh', 'sigmoid'
     'dropout_rate': 0.0,                     # Dropout (0.0 - 0.5)
