@@ -1,0 +1,26 @@
+# config.yaml
+model_name: "AdditionPerfectVersion"
+layers: [128, 64]
+activation: "relu"
+dropout_rate: 0.0
+output_activation: "linear"
+output_units: 1
+
+optimizer: "adam"
+learning_rate: 0.001
+loss: "mse"
+metrics: ["mae"]
+epochs: 1000
+batch_size: 32
+early_stopping_patience: 50
+
+target_loss: 0.000001
+target_mae: 0.0005
+target_accuracy: null
+min_improvement: 0.000000001
+
+n_samples: 10000
+test_size: 0.1
+normalize: false
+random_state: 42
+input_features: 2
