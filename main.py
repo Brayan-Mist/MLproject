@@ -39,7 +39,7 @@ if torch.cuda.is_available():
 CONFIG = {
     # === ПАРАМЕТРЫ МОДЕЛИ ===
     'model_name': 'sum_predictor',           # Имя модели (для файлов)
-    'layers': [256, 128, 64, 32],            # Скрытые слои [64, 32] или [128, 64, 32]
+    'layers': [128, 64],            # Скрытые слои [64, 32] или [128, 64, 32]
     'activation': 'relu',                    # Активация: 'relu', 'tanh', 'sigmoid'
     'dropout_rate': 0.0,                     # Dropout (0.0 - 0.5)
     'output_activation': 'linear',           # Выход: 'linear' (регрессия), 'softmax' (классификация)
@@ -50,20 +50,20 @@ CONFIG = {
     'learning_rate': 0.001,                  # Скорость обучения (0.001 - 0.1)
     'loss': 'mse',                          # 'mse', 'mae', 'cross_entropy'
     'metrics': ['mae'],                      # Метрики ['mae', 'accuracy', 'mse']
-    'epochs': 500,                           # Максимум эпох
+    'epochs': 1000,                           # Максимум эпох
     'batch_size': 32,                        # Размер батча (16, 32, 64, 128)
-    'early_stopping_patience': 15,           # Терпение для Early Stopping
+    'early_stopping_patience': 50,           # Терпение для Early Stopping
     
     # === КРИТЕРИИ ОСТАНОВКИ ОБУЧЕНИЯ ===
-    'target_loss': None,                     # Целевая ошибка для остановки (None = отключено, например 0.01)
-    'target_mae': None,                      # Целевая MAE для остановки (None = отключено, например 0.1)
+    'target_loss': 0.000001,                     # Целевая ошибка для остановки (None = отключено, например 0.01)
+    'target_mae': 0.0005,                      # Целевая MAE для остановки (None = отключено, например 0.1)
     'target_accuracy': None,                 # Целевая точность для классификации (None = отключено, например 0.95)
-    'min_improvement': 0.0001,               # Минимальное улучшение для продолжения обучения
+    'min_improvement': 1e-9,               # Минимальное улучшение для продолжения обучения
     
     # === ПАРАМЕТРЫ ДАННЫХ ===
-    'n_samples': 1000,                       # Количество примеров
+    'n_samples': 10000,                       # Количество примеров
     'test_size': 0.1,                        # Доля тестовых данных (0.1 - 0.3)
-    'normalize': True,                       # Нормализовать данные?
+    'normalize': False,                       # Нормализовать данные?
     'random_state': 42,                      # Seed для воспроизводимости
 }
 
