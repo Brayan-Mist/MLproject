@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="css/style.css?v=18">
+</head>
+<body class="site-body page-fade-body">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+
+    <header class="topbar">
+        <div class="brand">Профиль</div>
+        <div class="topbar-actions">
+            <a class="btn btn-ghost" href="index.html">Главная</a>
+            <a id="adminLink" class="btn btn-primary hidden" href="admin.html">Админ-панель</a>
+            <button id="logoutBtn" class="btn btn-ghost" type="button">Выйти</button>
+        </div>
+    </header>
+
+    <main class="main-content profile-page">
+        <section class="profile-shell profile-shell-single">
+            <div class="profile-cover"></div>
+
+            <div class="profile-head">
+                <div class="avatar-wrap">
+                    <img id="profileAvatarPreview" class="profile-avatar profile-avatar-lg" alt="avatar preview">
+                    <label for="profileAvatarInput" class="avatar-edit-btn">Изменить фото</label>
+                    <input id="profileAvatarInput" class="hidden" type="file" accept="image/*">
+                </div>
+
+                <div class="profile-identity">
+                    <h2 id="profileDisplayName">Пользователь</h2>
+                    <p id="profileEmail" class="profile-email"></p>
+                </div>
+            </div>
+
+            <form id="profileForm" class="profile-form">
+                <label for="profileNickname">Имя профиля</label>
+                <input id="profileNickname" type="text" maxlength="24" placeholder="Ваше имя" required>
+
+                <div class="modal-actions">
+                    <button id="removeAvatarBtn" class="btn btn-ghost" type="button">Убрать аватар</button>
+                    <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+                </div>
+
+                <p id="profileMessage" class="profile-message"></p>
+            </form>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js?v=1"></script>
+    <script src="js/core.js?v=18"></script>
+    <script src="js/profile.js?v=18"></script>
+</body>
+</html>
+
+

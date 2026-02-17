@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель</title>
+    <link rel="stylesheet" href="css/style.css?v=18">
+</head>
+<body class="site-body page-fade-body">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+
+    <header class="topbar">
+        <div class="brand">Admin Panel</div>
+        <div class="topbar-actions">
+            <a class="btn btn-ghost" href="index.html">Главная</a>
+            <button id="adminLogoutBtn" class="btn btn-primary" type="button">Выйти</button>
+        </div>
+    </header>
+
+    <main class="admin-page">
+        <div class="admin-grid">
+            <div class="stat-card">
+                <h3>Всего посещений</h3>
+                <p id="visitCount">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Пользователей</h3>
+                <p id="userCount">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Входов сегодня</h3>
+                <p id="todayLogins">0</p>
+            </div>
+        </div>
+
+        <section class="chart-card">
+            <h3>График посещений за день (по часам)</h3>
+            <canvas id="visitsChart" width="1000" height="300"></canvas>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js?v=1"></script>
+    <script src="js/core.js?v=18"></script>
+    <script src="js/admin.js?v=18"></script>
+</body>
+</html>
+
+

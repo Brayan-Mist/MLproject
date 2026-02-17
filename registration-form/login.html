@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="login-block">
+        <ul class="nav-tabs">
+            <li class="active">
+                <a href="#login">Вход</a>
+            </li>
+        </ul>
+        <form id="AuthorizationForm" name="AuthorizationForm" method="post">
+            <div class="form-box">
+                <label class="form-label" for="AuthorizationForm_email">Email</label>
+                <div class="input-holder">
+                    <input name="AuthorizationForm[email]" id="AuthorizationForm_email" type="text" />
+                    <input type="text" style="display:none;">
+                </div>
+            </div>
+
+            <div class="form-box">
+                <label class="form-label" for="AuthorizationForm_password">Пароль</label>
+                <div class="input-holder">
+                    <input name="AuthorizationForm[password]" id="AuthorizationForm_password" type="password" />
+                    <input type="password" style="display:none;">
+                </div>
+            </div>
+            <input type="submit" class="submit-btn" value="Войти" />
+        </form>
+    </div>
+
+    <script>
+        // Данные для авторизации (в реальном приложении здесь будет проверка с базой данных)
+        const users = [
+            { email: "admin@example.com", password: "admin123" },
+            { email: "user@example.com", password: "user123" },
+            { email: "maklakovmatvija@gmail.com", password: "123456" }
+        ];
+
+        // Языковые данные
+        const lang = {
+            error: {
+                email: ["Не верный формат.", "Укажите электронную почту."],
+                password: ["Пожалуйста, укажите пароль."]
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            /*******************************************/
+            /********       Верификация        *********/
+            
+            /** Добавляет ошибку
+            *   element - элемент к которому добавляется ошибка
+            * error - текст ошибки
+            */ 
+            var addError = function(element, error) {
+                element.classList.add("error");
+                element.setAttribute("data-error", error);
+            }
+            
+            /** Удаляет ошибку с элемента
+            * element - элемент с которого необходимо убрать ошибку
+            */
+            var removeError = function(element) {
+                element.classList.remove("error");
+                element.removeAttribute("data-error");
+            }
+            
+            /**
+            * Обработчик верификации ввода почты
+            */
+            var errorHandlerEmail = function(e) {
+                e = e || window.event;
+                var error = lang.error.email;
+                
+                var regexp = /[a-z0-9!$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum|ua|com.ua|ru|com.ru)\b/;
+                if (e.target.value === "") {
+                    addError(e.target.parentNode, error[1]);
+                } else if (!regexp.test(e.target.value)) {
+                    addError(e.target.parentNode, error[0]);
+                } else {
+                    removeError(e.target.parentNode);
+                }
+            }
+
+            /**
+            * Обработчик верификации ввода пароля
+            */
+            var errorHandlerPassword = function(e) {
+                e = e || window.event;
+                var error = lang.error.password;
+
+                if (e.target.value === "") {
+                    addError(e.target.parentNode, error[1]);
+                } else {
+                    removeError(e.target.parentNode);
+                }
+            }
+
+            document.getElementById('AuthorizationForm_email').addEventListener("blur", errorHandlerEmail, false);    
+            document.getElementById('AuthorizationForm_password').addEventListener("blur", errorHandlerPassword, false);    
+
+            /** Функция добавляет модальное окно на 2 секунды в element с надписью error
+            * 750ms - время появления окна
+            */
+            var addModalError = function(element, error) {
+                var div = document.createElement("div");
+                div.className = "modal-error";
+                div.style.opacity = 0;
+                div.innerHTML = error;
+                element.appendChild(div);
+                setTimeout(function() {
+                    div.style.opacity = 1;
+                }, 10);
+                
+                setTimeout((function(div) {
+                    return function() {
+                        div.style.opacity = 0;
+                    }
+                })(div), 2750);
+                div.addEventListener("transitionend", function(e) {
+                    if (this.style.opacity == 0) {
+                        this.parentNode.removeChild(this);
+                    }
+                }, false);
+            };
+
+            /*******************************************/
+            /*****   Авторизация      ******************/
+            
+            document.forms.AuthorizationForm.onsubmit = function (e) {
+                (e.preventDefault)? e.preventDefault() : e.returnValue = false;
+                if (!this.querySelector(".error")) {
+                    var email = this.elements['AuthorizationForm[email]'].value;
+                    var password = this.elements['AuthorizationForm[password]'].value;
+                    
+                    // Поиск пользователя в массиве
+                    var user = users.find(function(u) {
+                        return u.email === email && u.password === password;
+                    });
+                    
+                    if (user) {
+                        // Успешная авторизация
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userEmail', email);
+                        
+                        // Перенаправляем на личный кабинет
+                        window.location.href = 'dashboard.html?email=' + encodeURIComponent(email);
+                    } else {
+                        // Ошибка авторизации
+                        addModalError(this, "Неверный email или пароль!");
+                    }
+                }
+            };
+            /*******************************************/
+        }, false);
+    </script>
+</body>
+</html>

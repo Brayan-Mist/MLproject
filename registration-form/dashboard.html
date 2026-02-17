@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="user-profile">
+        <h1>Добро пожаловать в личный кабинет!</h1>
+        <div class="user-info">
+            <p><strong>Email:</strong> <span id="user-email">user@example.com</span></p>
+            <p><strong>Статус:</strong> <span style="color: green;">Авторизован</span></p>
+        </div>
+        
+        <div class="user-actions">
+            <button onclick="logout()" class="logout-btn">Выйти</button>
+        </div>
+    </div>
+
+    <script>
+        // Получаем email из параметров URL или localStorage
+        function getUserEmail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            return email || localStorage.getItem('userEmail') || 'user@example.com';
+        }
+
+        // Устанавливаем email пользователя
+        document.getElementById('user-email').textContent = getUserEmail();
+
+        // Функция выхода
+        function logout() {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        }
+
+        // Проверяем авторизацию
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        .user-profile {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .user-info {
+            margin: 20px 0;
+        }
+        
+        .user-info p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .logout-btn:hover {
+            background: #ff3838;
+        }
+    </style>
+</body>
+</html>

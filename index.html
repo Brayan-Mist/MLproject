@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinkDark Travel</title>
+    <link rel="stylesheet" href="css/style.css?v=18">
+</head>
+<body class="site-body page-fade-body">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+
+    <header class="topbar">
+        <div class="brand">Escort Hub</div>
+
+        <div class="topbar-actions" id="guestActions">
+            <a class="btn btn-ghost" href="auth.html">Войти</a>
+            <a class="btn btn-primary" href="auth.html#register">Регистрация</a>
+        </div>
+
+        <div class="user-menu hidden" id="userMenu">
+            <button id="profileTrigger" class="profile-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+                <img id="headerAvatar" class="top-avatar" alt="avatar">
+                <span id="headerNickname" class="user-chip"></span>
+                <span class="profile-trigger-arrow" aria-hidden="true">▾</span>
+            </button>
+
+            <div id="profileDropdown" class="profile-dropdown hidden" role="menu" aria-label="Профиль">
+                <div class="profile-dropdown-head">
+                    <img id="dropdownAvatar" class="dropdown-avatar" alt="avatar">
+                    <div class="profile-dropdown-meta">
+                        <p id="dropdownNickname" class="dropdown-nickname">Пользователь</p>
+                        <p id="dropdownEmail" class="dropdown-email">email@site.com</p>
+                    </div>
+                </div>
+                <div class="dropdown-divider" aria-hidden="true"></div>
+                <button class="dropdown-item" data-action="view-profile" type="button" role="menuitem">Просмотреть профиль</button>
+                <button class="dropdown-item" data-action="edit-profile" type="button" role="menuitem">Редактировать профиль</button>
+                <button class="dropdown-item" data-action="change-password" type="button" role="menuitem">Изменить пароль</button>
+                <a id="dropdownAdminLink" class="dropdown-item hidden" data-action="admin-panel" href="admin.html" role="menuitem">Админ-панель</a>
+                <div class="dropdown-divider" aria-hidden="true"></div>
+                <button class="dropdown-item dropdown-item-danger" data-action="logout" type="button" role="menuitem">Выйти из аккаунта</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <aside class="countries-panel sidebar-animated" id="countriesPanel">
+            <h2>Страны</h2>
+            <button id="clearLocationFilterBtn" class="btn btn-ghost sidebar-reset-btn" type="button">Все объявления</button>
+            <div id="countriesList" class="countries-list"></div>
+        </aside>
+
+        <main class="main-content">
+            <section class="ads-section">
+                <div id="adsGrid" class="ads-grid"></div>
+                <div id="adsEmpty" class="ads-empty hidden">
+                    Пока нет объявлений. Откройте профиль и создайте первое объявление.
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="viewProfileModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-card modal-card-premium">
+            <div class="modal-head">
+                <h3>Профиль пользователя</h3>
+                <button id="closeViewProfileModal" class="icon-btn" type="button" aria-label="Закрыть">x</button>
+            </div>
+
+            <div class="profile-overview">
+                <img id="viewProfileAvatar" class="profile-avatar profile-avatar-lg" alt="avatar">
+                <div class="profile-overview-meta">
+                    <p id="viewProfileNickname" class="overview-name"></p>
+                    <p id="viewProfileEmail" class="overview-email"></p>
+                    <p id="viewProfileRole" class="overview-role"></p>
+                </div>
+            </div>
+
+            <div class="modal-actions modal-actions-end">
+                <button class="btn btn-ghost" data-action="from-view-ad" type="button">Мое объявление</button>
+                <button class="btn btn-ghost" data-action="from-view-edit" type="button">Редактировать</button>
+                <button class="btn btn-primary" data-action="from-view-password" type="button">Изменить пароль</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editProfileModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-card modal-card-premium">
+            <div class="modal-head">
+                <h3>Редактировать профиль</h3>
+                <button id="closeEditProfileModal" class="icon-btn" type="button" aria-label="Закрыть">x</button>
+            </div>
+
+            <form id="editProfileForm" class="profile-form" novalidate>
+                <div class="profile-preview">
+                    <img id="editProfileAvatarPreview" class="profile-avatar" alt="avatar preview">
+                    <div class="profile-preview-meta">
+                        <p class="profile-preview-title">Фото профиля</p>
+                        <p class="profile-preview-subtitle">PNG/JPG, максимум 2 MB</p>
+                    </div>
+                </div>
+
+                <label for="editProfileNickname">Имя (nickname)</label>
+                <input id="editProfileNickname" type="text" maxlength="24" placeholder="Введите имя" required>
+
+                <label for="editProfileEmail">Email</label>
+                <input id="editProfileEmail" type="email" placeholder="Введите email" required>
+
+                <label for="editProfileAvatarInput">Аватар</label>
+                <input id="editProfileAvatarInput" type="file" accept="image/*">
+
+                <div class="modal-actions">
+                    <button id="removeAvatarBtn" class="btn btn-ghost" type="button">Убрать аватар</button>
+                    <div class="modal-actions-right">
+                        <button id="cancelEditProfileBtn" class="btn btn-ghost" type="button">Отмена</button>
+                        <button class="btn btn-primary" type="submit">Сохранить</button>
+                    </div>
+                </div>
+
+                <p id="editProfileMessage" class="profile-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="changePasswordModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-card modal-card-premium">
+            <div class="modal-head">
+                <h3>Изменить пароль</h3>
+                <button id="closePasswordModal" class="icon-btn" type="button" aria-label="Закрыть">x</button>
+            </div>
+
+            <form id="changePasswordForm" class="profile-form" novalidate>
+                <label for="currentPassword">Текущий пароль</label>
+                <input id="currentPassword" type="password" placeholder="Введите текущий пароль" required>
+
+                <label for="newPassword">Новый пароль</label>
+                <input id="newPassword" type="password" placeholder="Минимум 6 символов" required>
+
+                <label for="confirmNewPassword">Повторите новый пароль</label>
+                <input id="confirmNewPassword" type="password" placeholder="Повторите новый пароль" required>
+
+                <div class="modal-actions">
+                    <button id="cancelPasswordBtn" class="btn btn-ghost" type="button">Отмена</button>
+                    <button class="btn btn-primary" type="submit">Сохранить пароль</button>
+                </div>
+
+                <p id="changePasswordMessage" class="profile-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="adModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-card modal-card-premium modal-card-ad">
+            <div class="modal-head">
+                <h3>Мое объявление</h3>
+                <button id="closeAdModal" class="icon-btn" type="button" aria-label="Закрыть">x</button>
+            </div>
+
+            <form id="adForm" class="profile-form" novalidate>
+                <label for="adText">Текст объявления</label>
+                <textarea id="adText" maxlength="1800" placeholder="Опишите объявление"></textarea>
+
+                <div class="ad-location-grid">
+                    <div>
+                        <label for="adCountry">Страна</label>
+                        <select id="adCountry" required>
+                            <option value="">Выберите страну</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="adCity">Город</label>
+                        <select id="adCity" required disabled>
+                            <option value="">Сначала выберите страну</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="ad-upload-grid">
+                    <div class="ad-upload-box">
+                        <label for="adPhotosInput">Фото (до 5)</label>
+                        <input id="adPhotosInput" type="file" accept="image/*" multiple>
+                        <p id="adPhotosInfo" class="ad-upload-note">Выбрано фото: 0/5</p>
+                    </div>
+
+                    <div class="ad-upload-box">
+                        <label for="adVideosInput">Видео (до 3)</label>
+                        <input id="adVideosInput" type="file" accept="video/*" multiple>
+                        <p id="adVideosInfo" class="ad-upload-note">Выбрано видео: 0/3</p>
+                    </div>
+                </div>
+
+                <div id="adMediaPreview" class="ad-media-preview"></div>
+
+                <div class="modal-actions">
+                    <button id="deleteAdBtn" class="btn btn-ghost hidden" type="button">Удалить объявление</button>
+                    <div class="modal-actions-right">
+                        <button id="cancelAdBtn" class="btn btn-ghost" type="button">Отмена</button>
+                        <button id="saveAdBtn" class="btn btn-primary" type="submit">Опубликовать</button>
+                    </div>
+                </div>
+
+                <p id="adMessage" class="profile-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js?v=1"></script>
+    <script src="js/core.js?v=18"></script>
+    <script src="js/main.js?v=18"></script>
+</body>
+</html>
+
+

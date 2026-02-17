@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход и Регистрация</title>
+    <link rel="stylesheet" href="css/style.css?v=18">
+</head>
+<body class="auth-page-body page-fade-body">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+
+    <div class="auth-wrapper">
+        <a class="back-home" href="index.html">На главную</a>
+
+        <div class="auth-box">
+            <h2 id="authTitle">Вход</h2>
+
+            <div class="tabs">
+                <button id="loginTab" class="active" type="button">Вход</button>
+                <button id="registerTab" type="button">Регистрация</button>
+            </div>
+
+            <form id="loginForm" novalidate autocomplete="off">
+                <input type="email" id="loginEmail" placeholder="Email" autocomplete="off">
+                <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="off">
+                <button type="submit">Войти</button>
+            </form>
+
+            <form id="registerForm" class="hidden" novalidate autocomplete="off">
+                <input type="text" id="registerNickname" placeholder="Ник" autocomplete="off">
+                <input type="email" id="registerEmail" placeholder="Email" autocomplete="off">
+                <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="off">
+                <input type="password" id="registerConfirm" placeholder="Подтвердите пароль" autocomplete="off">
+
+                <div class="auth-select-field">
+                    <label for="registerCountry">Страна</label>
+                    <select id="registerCountry">
+                        <option value="">Выберите страну</option>
+                    </select>
+                </div>
+
+                <div class="auth-select-field">
+                    <label for="registerCity">Город</label>
+                    <select id="registerCity" disabled>
+                        <option value="">Сначала выберите страну</option>
+                    </select>
+                </div>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+
+            <p id="authMessage"></p>
+            <p class="hint">Админ: admin@site.com / Admin123! (или admin123)</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js?v=1"></script>
+    <script src="js/core.js?v=18"></script>
+    <script src="js/auth.js?v=18"></script>
+    <script>
+        (function () {
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var error = params.get("error") || "";
+                var errorCode = params.get("error_code") || "";
+                if (error || errorCode) {
+                    var msg = params.get("error_description") || "";
+                    if (msg) {
+                        msg = decodeURIComponent(msg.replace(/\+/g, "%20"));
+                    }
+                    var target = document.getElementById("authMessage");
+                    if (target) {
+                        target.textContent = msg || (errorCode ? ("Ошибка: " + errorCode) : ("Ошибка: " + error));
+                        target.className = "form-message error";
+                    }
+                }
+            } catch {
+                // ignore
+            }
+        })();
+    </script>
+</body>
+</html>
